@@ -41,6 +41,29 @@ wayback picture, we want open and stardust from 1 day
 
     Fill NA/NAN with zeros because we are mostly working with ints
 '''
+def data_cleanup(df):
+    #for index, row in df.iterrows():
+    #    row['DATE'] =  str(row['DATE']).replace('/', '-')
+    
+    # make dates match format
+    #df['DATE'].dt.time = df['TIME'].to_datetime()
+    #df.to_excel("data/NBA_Formula.xlsx", index=False)
+    for row in df.iterrows():
+        row['DATE'] = row['DATE'].split()[0] + ' ' + str(row['TIME'])
+    df.to_excel("data/NBA_Formula.xlsx", index=False)
+    
+# def check_scores_against_database(df_csv, df_excel):
+#     # if csvdate == exceldate &&
+#     # we select from excelTEAM, which we split into city and name
+#     # and we select excelTEAM A or H, which selects csv column home/away team/city
+#     # check total score of excel against csv
+#     # if same continue, if different replace excel value with CSV
+#     
+#     # first we split date time is csv
+#     for index, row in df_csv.iterrows():
+#         break
+#         print(row['gameDateTimeEst'].split()[0])
+
 def fill_na(df):
     df.fillna(0)
 
@@ -52,10 +75,11 @@ def data_cleanup(df):
 def main() -> int:
     # load excel
     p = Path('data/NBA_Formula.xlsx')
-    df = pd.read_excel(p)
-    data_cleanup(df)
+    df_work = pd.read_excel(p)
+    data_cleanup(df_work)
 
-    print(df)
+    p = Path('data/Games.csv')
+    df_dataset = pd.read_csv(p)
     return 0
 
 if __name__ == '__main__':
